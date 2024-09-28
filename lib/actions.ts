@@ -1,8 +1,10 @@
 "use server";
 
+import prisma from "@/prisma/db";
 import { signupSchema } from "@/validations/signupSchema";
+import { hash } from "bcryptjs";
 
-export const createUser = ({
+export const createUser = async ({
   email,
   username,
   password,
@@ -31,4 +33,14 @@ export const createUser = ({
         signupValidation.error?.issues[0].message ?? "エラーが発生しました",
     };
   }
+
+  const hashedPassword = await hash(password, 10);
+
+  await prisma.user.create({
+    data: {
+      email,
+      username,
+      password: hashedPassword,
+    },
+  });
 };
