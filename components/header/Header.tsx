@@ -1,9 +1,10 @@
 import { FaUserCircle } from "react-icons/fa";
 import Link from "next/link";
 import HeaderLinks from "./HeaderLinks";
+import { auth } from "@/auth";
 
-const Header = () => {
-  let session = false;
+const Header = async () => {
+  const session = await auth();
 
   return (
     <header className="border-b p-2">
@@ -26,6 +27,7 @@ const Header = () => {
               />
             </div>
             <div>
+              {session && <p>{session.user?.email}</p>}
               <FaUserCircle />
             </div>
           </div>
