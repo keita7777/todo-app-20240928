@@ -1,5 +1,6 @@
 "use client";
 
+import { loginWithCredentials } from "@/lib/actions";
 import { loginSchema } from "@/validations/loginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -24,7 +25,13 @@ const Signin = () => {
   });
 
   const onSubmit = async (data: LoginFormInput) => {
-    console.log(data);
+    const response = await loginWithCredentials({ ...data });
+
+    if (response?.message) {
+      setError("email", {
+        message: response.message,
+      });
+    }
   };
 
   return (

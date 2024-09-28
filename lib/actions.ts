@@ -1,6 +1,7 @@
 "use server";
 
 import prisma from "@/prisma/db";
+import { loginSchema } from "@/validations/loginSchema";
 import { signupSchema } from "@/validations/signupSchema";
 import { hash } from "bcryptjs";
 
@@ -55,6 +56,26 @@ export const createUser = async ({
     return {
       error: true,
       message: "エラーが発生しました",
+    };
+  }
+};
+
+export const loginWithCredentials = async ({
+  email,
+  password,
+}: {
+  email: string;
+  password: string;
+}) => {
+  const loginValidation = loginSchema.safeParse({
+    email,
+    password,
+  });
+
+  if (!loginValidation.success) {
+    return {
+      error: true,
+      message: loginValidation.error?.issues[0]?.message ?? "An error occured",
     };
   }
 };
