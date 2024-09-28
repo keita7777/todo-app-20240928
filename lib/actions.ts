@@ -1,5 +1,6 @@
 "use server";
 
+import { signIn } from "@/auth";
 import prisma from "@/prisma/db";
 import { loginSchema } from "@/validations/loginSchema";
 import { signupSchema } from "@/validations/signupSchema";
@@ -78,4 +79,12 @@ export const loginWithCredentials = async ({
       message: loginValidation.error?.issues[0]?.message ?? "An error occured",
     };
   }
+
+  try {
+    await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+  } catch (error) {}
 };
