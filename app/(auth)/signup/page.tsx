@@ -1,43 +1,84 @@
+"use client";
+
+import { createUser } from "@/lib/actions";
+import { signupSchema } from "@/validations/signupSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+type FormInput = z.infer<typeof signupSchema>;
+
 const Signup = () => {
+  const {
+    handleSubmit,
+    reset,
+    register,
+    formState: { errors },
+  } = useForm<FormInput>({
+    resolver: zodResolver(signupSchema),
+    defaultValues: {
+      email: "",
+      username: "",
+      password: "",
+      passwordConfirm: "",
+    },
+  });
+
+  const onSubmit = (data: FormInput) => {
+    console.log(data);
+  };
+
   return (
     <div>
       <h1 className="text-center text-2xl font-bold mb-6">新規ユーザー登録</h1>
-      <form action="">
-        <div className="flex flex-col">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex flex-col mb-4">
           <label htmlFor="email">メールアドレス</label>
           <input
             id="email"
-            name="email"
             type="text"
-            className="border rounded-md p-2 text-sm mb-2"
+            className="border rounded-md p-2 text-sm"
+            {...register("email")}
           />
+          {errors["email"] && (
+            <p className="text-red-500">{errors["email"].message}</p>
+          )}
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col mb-4">
           <label htmlFor="username">ユーザー名</label>
           <input
             id="username"
-            name="username"
             type="text"
-            className="border rounded-md p-2 text-sm mb-2"
+            className="border rounded-md p-2 text-sm"
+            {...register("username")}
           />
+          {errors["username"] && (
+            <p className="text-red-500">{errors["username"].message}</p>
+          )}
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col mb-4">
           <label htmlFor="password">パスワード</label>
           <input
             id="password"
-            name="password"
             type="password"
-            className="border rounded-md p-2 text-sm mb-2"
+            className="border rounded-md p-2 text-sm"
+            {...register("password")}
           />
+          {errors["password"] && (
+            <p className="text-red-500">{errors["password"].message}</p>
+          )}
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col mb-4">
           <label htmlFor="passwordConfirm">パスワード確認</label>
           <input
             id="passwordConfirm"
-            name="passwordConfirm"
             type="password"
-            className="border rounded-md p-2 text-sm mb-2"
+            className="border rounded-md p-2 text-sm"
+            {...register("passwordConfirm")}
           />
+          {errors["passwordConfirm"] && (
+            <p className="text-red-500">{errors["passwordConfirm"].message}</p>
+          )}
         </div>
         <div className="flex justify-center">
           <button
