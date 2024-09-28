@@ -13,6 +13,7 @@ const Signup = () => {
     handleSubmit,
     reset,
     register,
+    setError,
     formState: { errors },
   } = useForm<FormInput>({
     resolver: zodResolver(signupSchema),
@@ -26,7 +27,12 @@ const Signup = () => {
 
   const onSubmit = async (data: FormInput) => {
     const response = await createUser({ ...data });
-    console.log(response);
+
+    if (response?.message) {
+      setError("email", {
+        message: response.message,
+      });
+    }
   };
 
   return (
