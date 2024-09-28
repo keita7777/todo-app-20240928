@@ -32,24 +32,24 @@ const Signin = () => {
       <h1 className="text-center text-2xl font-bold mb-6">ログイン</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <fieldset disabled={formState.isSubmitting}>
-          <div className="flex flex-col">
+          <div className="flex flex-col mb-4">
             <label htmlFor="username">ユーザー名</label>
             <input
               id="username"
               type="text"
-              className="border rounded-md p-2 text-sm mb-2"
+              className="border rounded-md p-2 text-sm"
               {...register("email")}
             />
             {errors["email"] && (
               <p className="text-red-500">{errors["email"].message}</p>
             )}
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col mb-4">
             <label htmlFor="password">パスワード</label>
             <input
               id="password"
               type="password"
-              className="border rounded-md p-2 text-sm mb-2"
+              className="border rounded-md p-2 text-sm"
               {...register("password")}
             />
             {errors["password"] && (
