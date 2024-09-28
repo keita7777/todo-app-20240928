@@ -45,8 +45,6 @@ export const createUser = async ({
       },
     });
   } catch (error: any) {
-    // console.log(error);
-
     if (error.code === "P2002") {
       return {
         error: true,

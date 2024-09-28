@@ -3,7 +3,7 @@ import Link from "next/link";
 import HeaderLinks from "./HeaderLinks";
 
 const Header = () => {
-  let session = true;
+  let session = false;
 
   return (
     <header className="border-b p-2">
