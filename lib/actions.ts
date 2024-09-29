@@ -91,6 +91,15 @@ export const loginWithCredentials = async ({
       password,
       redirect: false,
     });
+
+    await prisma.user.update({
+      where: {
+        email,
+      },
+      data: {
+        lastLogin: new Date(),
+      },
+    });
   } catch (error: any) {
     return {
       error: true,

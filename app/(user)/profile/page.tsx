@@ -15,7 +15,10 @@ const Profile = async () => {
   return (
     <div>
       <p>ユーザー名：{user?.username}</p>
-      <p>最終ログイン日：2024年12月12日</p>
+      <p>
+        最終ログイン日：
+        {user?.lastLogin && new Date(user?.lastLogin).toLocaleString()}
+      </p>
     </div>
   );
 };
