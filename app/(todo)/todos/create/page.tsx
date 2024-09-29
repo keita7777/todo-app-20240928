@@ -3,12 +3,14 @@
 import { createTodo } from "@/lib/actions";
 import { todoSchema } from "@/validations/todoSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 export type TodoFormInput = z.infer<typeof todoSchema>;
 
 const Create = () => {
+  const router = useRouter();
   const {
     handleSubmit,
     reset,
@@ -27,7 +29,15 @@ const Create = () => {
 
   const onSubmit = async (data: TodoFormInput) => {
     const response = await createTodo(data);
-    console.log(response);
+
+    if (response?.message) {
+      setError("root", {
+        message: response.message,
+      });
+    } else {
+      router.push("/todos");
+      router.refresh();
+    }
   };
 
   return (
@@ -77,6 +87,9 @@ const Create = () => {
           )}
         </div>
         <div className="flex justify-center gap-2">
+          {errors["root"] && (
+            <p className="text-red-500">{errors["root"].message}</p>
+          )}
           <button
             type="submit"
             className="bg-blue-500 text-white px-2 py-2 mt-4 rounded-md w-2/5"

@@ -7,6 +7,7 @@ import { signupSchema } from "@/validations/signupSchema";
 import { todoSchema } from "@/validations/todoSchema";
 import { Status } from "@prisma/client";
 import { hash } from "bcryptjs";
+import { redirect } from "next/navigation";
 
 export const createUser = async ({
   email,
@@ -123,19 +124,32 @@ export const createTodo = async ({
 
   const session = await auth();
   const sessionUserEmail = session?.user?.email;
-  const user = prisma.user.findUnique({
+  const userId = await prisma.user.findUnique({
     where: {
       email: sessionUserEmail as string,
     },
+    select: {
+      id: true,
+    },
   });
 
+  if (!userId) {
+    redirect("/login");
+  }
+
   try {
-    // await prisma.todo.create({
-    //   data: {
-    //     title,
-    //     description,
-    //     status,
-    //   },
-    // });
-  } catch (error) {}
+    await prisma.todo.create({
+      data: {
+        title,
+        description,
+        status,
+        userId: userId.id,
+      },
+    });
+  } catch (error: any) {
+    return {
+      error: true,
+      message: "エラーが発生しました",
+    };
+  }
 };
