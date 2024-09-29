@@ -27,7 +27,6 @@ const Header = async () => {
               />
             </div>
             <div>
-              {session && <p>{session.user?.email}</p>}
               <FaUserCircle />
             </div>
           </div>
