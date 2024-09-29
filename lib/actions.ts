@@ -122,8 +122,12 @@ export const createTodo = async ({
   }
 
   const session = await auth();
-  const user = session?.user;
-  console.log(user);
+  const sessionUserEmail = session?.user?.email;
+  const user = prisma.user.findUnique({
+    where: {
+      email: sessionUserEmail as string,
+    },
+  });
 
   try {
     // await prisma.todo.create({
