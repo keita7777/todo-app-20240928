@@ -1,9 +1,11 @@
 "use server";
 
-import { signIn } from "@/auth";
+import { auth, signIn } from "@/auth";
 import prisma from "@/prisma/db";
 import { loginSchema } from "@/validations/loginSchema";
 import { signupSchema } from "@/validations/signupSchema";
+import { todoSchema } from "@/validations/todoSchema";
+import { Status } from "@prisma/client";
 import { hash } from "bcryptjs";
 
 export const createUser = async ({
@@ -94,4 +96,42 @@ export const loginWithCredentials = async ({
         error.cause.err.message || "メールアドレスかパスワードが間違っています",
     };
   }
+};
+
+export const createTodo = async ({
+  title,
+  description,
+  status,
+}: {
+  title: string;
+  description: string;
+  status: Status;
+}) => {
+  const todoValidation = todoSchema.safeParse({
+    title,
+    description,
+    status,
+  });
+
+  if (!todoValidation.success) {
+    return {
+      error: true,
+      message:
+        todoValidation.error?.issues[0]?.message ?? "エラーが発生しました",
+    };
+  }
+
+  const session = await auth();
+  const user = session?.user;
+  console.log(user);
+
+  try {
+    // await prisma.todo.create({
+    //   data: {
+    //     title,
+    //     description,
+    //     status,
+    //   },
+    // });
+  } catch (error) {}
 };

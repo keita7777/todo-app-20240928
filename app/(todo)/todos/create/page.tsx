@@ -1,5 +1,6 @@
 "use client";
 
+import { createTodo } from "@/lib/actions";
 import { todoSchema } from "@/validations/todoSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -24,8 +25,9 @@ const Create = () => {
     },
   });
 
-  const onSubmit = (data: TodoFormInput) => {
-    console.log(data);
+  const onSubmit = async (data: TodoFormInput) => {
+    const response = await createTodo(data);
+    console.log(response);
   };
 
   return (
