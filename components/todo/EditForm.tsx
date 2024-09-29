@@ -1,32 +1,62 @@
+"use client";
+
 import { EditTodo } from "@/app/(todo)/todos/[id]/edit/page";
+import { TodoFormInput } from "@/app/(todo)/todos/create/page";
+import { todoSchema } from "@/validations/todoSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
 
 const EditForm = ({ todo }: { todo: EditTodo }) => {
   const { id, title, description, status } = todo;
+  const router = useRouter();
+  const {
+    handleSubmit,
+    reset,
+    register,
+    setError,
+    formState,
+    formState: { errors },
+  } = useForm<TodoFormInput>({
+    resolver: zodResolver(todoSchema),
+    defaultValues: {
+      title: title,
+      description: title,
+      status: status,
+    },
+  });
+
+  const onSubmit = async (data: TodoFormInput) => {
+    console.log(data);
+  };
 
   return (
-    <form action="">
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col mb-4">
-        <label htmlFor="">タイトル</label>
+        <label htmlFor="title">タイトル</label>
         <input
-          type="text"
+          type="title"
           className="border rounded-md p-2 text-sm"
           defaultValue={title}
+          {...register("title")}
         />
       </div>
       <div className="flex flex-col mb-4">
-        <label htmlFor="">詳細</label>
+        <label htmlFor="description">詳細</label>
         <textarea
+          id="description"
           className="border rounded-md p-2 text-sm"
           defaultValue={description}
+          {...register("description")}
         />
       </div>
       <div className="flex flex-col mb-4 max-w-[50%]">
-        <label htmlFor="">ステータス</label>
+        <label htmlFor="status">ステータス</label>
         <select
-          name=""
-          id=""
+          id="status"
           defaultValue={status}
           className="border rounded-md p-2 text-sm"
+          {...register("status")}
         >
           <option value="default" disabled>
             ステータスを選択
