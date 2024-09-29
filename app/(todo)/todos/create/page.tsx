@@ -1,23 +1,67 @@
+"use client";
+
+import { todoSchema } from "@/validations/todoSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+export type TodoFormInput = z.infer<typeof todoSchema>;
+
 const Create = () => {
+  const {
+    handleSubmit,
+    reset,
+    register,
+    setError,
+    formState,
+    formState: { errors },
+  } = useForm<TodoFormInput>({
+    resolver: zodResolver(todoSchema),
+    defaultValues: {
+      title: "",
+      description: "",
+      status: undefined,
+    },
+  });
+
+  const onSubmit = (data: TodoFormInput) => {
+    console.log(data);
+  };
+
   return (
     <div>
       <h1 className="text-center text-2xl font-bold mb-6">TODOを作成</h1>
-      <form action="">
-        <div className="flex flex-col">
-          <label htmlFor="">タイトル</label>
-          <input type="text" className="border rounded-md p-2 text-sm mb-2" />
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex flex-col mb-4">
+          <label htmlFor="title">タイトル</label>
+          <input
+            id="title"
+            type="text"
+            className="border rounded-md p-2 text-sm"
+            {...register("title")}
+          />
+          {errors["title"] && (
+            <p className="text-red-500">{errors["title"].message}</p>
+          )}
         </div>
-        <div className="flex flex-col">
-          <label htmlFor="">詳細</label>
-          <textarea className="border rounded-md p-2 text-sm mb-2" />
+        <div className="flex flex-col mb-4">
+          <label htmlFor="description">詳細</label>
+          <textarea
+            id="description"
+            className="border rounded-md p-2 text-sm"
+            {...register("description")}
+          />
+          {errors["description"] && (
+            <p className="text-red-500">{errors["description"].message}</p>
+          )}
         </div>
-        <div className="flex flex-col max-w-1/2">
-          <label htmlFor="">ステータス</label>
+        <div className="flex flex-col mb-4 max-w-[50%]">
+          <label htmlFor="status">ステータス</label>
           <select
-            name=""
-            id=""
+            id="status"
             defaultValue="default"
-            className="border rounded-md p-2 text-sm mb-2"
+            className="border rounded-md p-2 text-sm"
+            {...register("status")}
           >
             <option value="default" disabled>
               ステータスを選択
@@ -26,6 +70,9 @@ const Create = () => {
             <option value="progress">進行中</option>
             <option value="done">完了</option>
           </select>
+          {errors["status"] && (
+            <p className="text-red-500">{errors["status"].message}</p>
+          )}
         </div>
         <div className="flex justify-center gap-2">
           <button
