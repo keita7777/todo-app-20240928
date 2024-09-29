@@ -180,10 +180,7 @@ export const getTodoDetail = async (id: string) => {
   });
 
   if (!todo) {
-    return {
-      error: true,
-      message: "エラーが発生しました",
-    };
+    throw new Error("TODOの取得に失敗しました");
   }
 
   return todo;
