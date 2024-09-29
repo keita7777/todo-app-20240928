@@ -153,3 +153,15 @@ export const createTodo = async ({
     };
   }
 };
+
+export const getAllTodos = async () => {
+  const todos = await prisma.todo.findMany({
+    include: {
+      user: true,
+    },
+    orderBy: {
+      updatedAt: "desc",
+    },
+  });
+  return todos;
+};
