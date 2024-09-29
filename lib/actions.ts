@@ -204,3 +204,18 @@ export const updateTodo = async (todoId: string, data: TodoFormInput) => {
     };
   }
 };
+
+export const deleteTodo = async (id: string) => {
+  try {
+    await prisma.todo.delete({
+      where: {
+        id,
+      },
+    });
+  } catch (error) {
+    return {
+      error: true,
+      message: "更新に失敗しました",
+    };
+  }
+};
