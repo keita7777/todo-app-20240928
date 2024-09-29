@@ -25,7 +25,7 @@ const TodoList = async () => {
               </div>
               <div className="flex-shrink-0 w-12 mx-auto flex">
                 <Link
-                  href={`/todos/{todo.id}/edit`}
+                  href={`/todos/${todo.id}/edit`}
                   className="bg-green-600 px-2 py-1 rounded-md text-slate-50 w-full text-center"
                 >
                   編集
