@@ -16,7 +16,6 @@ const DeteleModal = ({ setIsModalOpen, id }: DeteleModalProps) => {
 
     router.push("/todos");
     router.refresh();
-    setIsModalOpen(false);
   };
   return (
     <div className="absolute top-0 left-0 w-screen h-screen bg-gray-400 bg-opacity-30 flex justify-center items-center">
