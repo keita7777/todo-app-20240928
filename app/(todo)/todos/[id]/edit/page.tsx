@@ -1,23 +1,45 @@
-const Edit = () => {
+import { getTodoDetail } from "@/lib/actions";
+import { Status } from "@prisma/client";
+
+type EditTodo = {
+  id: string;
+  title: string;
+  description: string;
+  status: Status;
+};
+
+const Edit = async ({ params }: { params: { id: string } }) => {
+  const todo = await getTodoDetail(params.id);
+  // エラーの時どうするか？？
+
+  const { id, title, description, status } = todo as EditTodo;
+
   return (
     <div>
       <h1 className="text-center text-2xl font-bold mb-6">TODOを編集</h1>
       <form action="">
-        <div className="flex flex-col">
+        <div className="flex flex-col mb-4">
           <label htmlFor="">タイトル</label>
-          <input type="text" className="border rounded-md p-2 text-sm mb-2" />
+          <input
+            type="text"
+            className="border rounded-md p-2 text-sm"
+            defaultValue={title}
+          />
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col mb-4">
           <label htmlFor="">詳細</label>
-          <textarea className="border rounded-md p-2 text-sm mb-2" />
+          <textarea
+            className="border rounded-md p-2 text-sm"
+            defaultValue={description}
+          />
         </div>
-        <div className="flex flex-col max-w-1/2">
+        <div className="flex flex-col mb-4 max-w-[50%]">
           <label htmlFor="">ステータス</label>
           <select
             name=""
             id=""
-            defaultValue="default"
-            className="border rounded-md p-2 text-sm mb-2"
+            defaultValue={status}
+            className="border rounded-md p-2 text-sm"
           >
             <option value="default" disabled>
               ステータスを選択
@@ -36,9 +58,9 @@ const Edit = () => {
           </button>
           <button
             type="submit"
-            className="bg-gray-500 text-white px-2 py-2 mt-4 rounded-md w-2/5"
+            className="bg-red-500 text-white px-2 py-2 mt-4 rounded-md w-2/5"
           >
-            リセット
+            削除
           </button>
         </div>
       </form>

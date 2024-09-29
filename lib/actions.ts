@@ -165,3 +165,26 @@ export const getAllTodos = async () => {
   });
   return todos;
 };
+
+export const getTodoDetail = async (id: string) => {
+  const todo = await prisma.todo.findUnique({
+    where: {
+      id,
+    },
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      status: true,
+    },
+  });
+
+  if (!todo) {
+    return {
+      error: true,
+      message: "エラーが発生しました",
+    };
+  }
+
+  return todo;
+};
