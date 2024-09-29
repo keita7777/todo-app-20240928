@@ -2,6 +2,7 @@
 
 import { EditTodo } from "@/app/(todo)/todos/[id]/edit/page";
 import { TodoFormInput } from "@/app/(todo)/todos/create/page";
+import { updateTodo } from "@/lib/actions";
 import { todoSchema } from "@/validations/todoSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -21,17 +22,29 @@ const EditForm = ({ todo }: { todo: EditTodo }) => {
     resolver: zodResolver(todoSchema),
     defaultValues: {
       title: title,
-      description: title,
+      description: description,
       status: status,
     },
   });
 
   const onSubmit = async (data: TodoFormInput) => {
-    console.log(data);
+    const response = await updateTodo(id, data);
+
+    if (response?.message) {
+      setError("root", {
+        message: response.message,
+      });
+    } else {
+      router.push("/todos");
+      router.refresh();
+    }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      {errors["root"] && (
+        <p className="text-red-500 text-center">{errors["root"].message}</p>
+      )}
       <div className="flex flex-col mb-4">
         <label htmlFor="title">タイトル</label>
         <input
@@ -40,6 +53,9 @@ const EditForm = ({ todo }: { todo: EditTodo }) => {
           defaultValue={title}
           {...register("title")}
         />
+        {errors["title"] && (
+          <p className="text-red-500">{errors["title"].message}</p>
+        )}
       </div>
       <div className="flex flex-col mb-4">
         <label htmlFor="description">詳細</label>
@@ -49,6 +65,9 @@ const EditForm = ({ todo }: { todo: EditTodo }) => {
           defaultValue={description}
           {...register("description")}
         />
+        {errors["description"] && (
+          <p className="text-red-500">{errors["description"].message}</p>
+        )}
       </div>
       <div className="flex flex-col mb-4 max-w-[50%]">
         <label htmlFor="status">ステータス</label>
@@ -65,6 +84,9 @@ const EditForm = ({ todo }: { todo: EditTodo }) => {
           <option value="progress">進行中</option>
           <option value="done">完了</option>
         </select>
+        {errors["status"] && (
+          <p className="text-red-500">{errors["status"].message}</p>
+        )}
       </div>
       <div className="flex justify-center gap-2">
         <button

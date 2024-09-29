@@ -1,5 +1,6 @@
 "use server";
 
+import { TodoFormInput } from "@/app/(todo)/todos/create/page";
 import { auth, signIn } from "@/auth";
 import prisma from "@/prisma/db";
 import { loginSchema } from "@/validations/loginSchema";
@@ -184,4 +185,22 @@ export const getTodoDetail = async (id: string) => {
   }
 
   return todo;
+};
+
+export const updateTodo = async (todoId: string, data: TodoFormInput) => {
+  try {
+    await prisma.todo.update({
+      where: {
+        id: todoId,
+      },
+      data: {
+        ...data,
+      },
+    });
+  } catch (error) {
+    return {
+      error: true,
+      message: "更新に失敗しました",
+    };
+  }
 };
