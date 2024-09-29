@@ -1,7 +1,6 @@
-import { FaUserCircle } from "react-icons/fa";
-import Link from "next/link";
 import HeaderLinks from "./HeaderLinks";
 import { auth } from "@/auth";
+import ProfileButton from "./ProfileButton";
 
 const Header = async () => {
   const session = await auth();
@@ -26,9 +25,7 @@ const Header = async () => {
                 className="border rounded-md px-2 py-1 text-sm"
               />
             </div>
-            <div>
-              <FaUserCircle />
-            </div>
+            <ProfileButton />
           </div>
         )}
       </div>
