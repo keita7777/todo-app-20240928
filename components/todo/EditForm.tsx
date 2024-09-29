@@ -6,11 +6,15 @@ import { updateTodo } from "@/lib/actions";
 import { todoSchema } from "@/validations/todoSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
+import DeteleModal from "./DeteleModal";
 
 const EditForm = ({ todo }: { todo: EditTodo }) => {
   const { id, title, description, status } = todo;
   const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const {
     handleSubmit,
     reset,
@@ -41,68 +45,75 @@ const EditForm = ({ todo }: { todo: EditTodo }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      {errors["root"] && (
-        <p className="text-red-500 text-center">{errors["root"].message}</p>
-      )}
-      <div className="flex flex-col mb-4">
-        <label htmlFor="title">タイトル</label>
-        <input
-          type="title"
-          className="border rounded-md p-2 text-sm"
-          defaultValue={title}
-          {...register("title")}
-        />
-        {errors["title"] && (
-          <p className="text-red-500">{errors["title"].message}</p>
+    <>
+      {isModalOpen && <DeteleModal setIsModalOpen={setIsModalOpen} id={id} />}
+      <form onSubmit={handleSubmit(onSubmit)}>
+        {errors["root"] && (
+          <p className="text-red-500 text-center">{errors["root"].message}</p>
         )}
-      </div>
-      <div className="flex flex-col mb-4">
-        <label htmlFor="description">詳細</label>
-        <textarea
-          id="description"
-          className="border rounded-md p-2 text-sm"
-          defaultValue={description}
-          {...register("description")}
-        />
-        {errors["description"] && (
-          <p className="text-red-500">{errors["description"].message}</p>
-        )}
-      </div>
-      <div className="flex flex-col mb-4 max-w-[50%]">
-        <label htmlFor="status">ステータス</label>
-        <select
-          id="status"
-          defaultValue={status}
-          className="border rounded-md p-2 text-sm"
-          {...register("status")}
-        >
-          <option value="default" disabled>
-            ステータスを選択
-          </option>
-          <option value="notstarted">未着手</option>
-          <option value="progress">進行中</option>
-          <option value="done">完了</option>
-        </select>
-        {errors["status"] && (
-          <p className="text-red-500">{errors["status"].message}</p>
-        )}
-      </div>
-      <div className="flex justify-center gap-2">
-        <button
-          type="submit"
-          className="bg-blue-500 text-white px-2 py-2 mt-4 rounded-md w-2/5"
-        >
-          更新
-        </button>
-        <button
-          type="submit"
-          className="bg-red-500 text-white px-2 py-2 mt-4 rounded-md w-2/5"
-        >
-          削除
-        </button>
-      </div>
-    </form>
+        <div className="flex flex-col mb-4">
+          <label htmlFor="title">タイトル</label>
+          <input
+            type="title"
+            className="border rounded-md p-2 text-sm"
+            defaultValue={title}
+            {...register("title")}
+          />
+          {errors["title"] && (
+            <p className="text-red-500">{errors["title"].message}</p>
+          )}
+        </div>
+        <div className="flex flex-col mb-4">
+          <label htmlFor="description">詳細</label>
+          <textarea
+            id="description"
+            className="border rounded-md p-2 text-sm"
+            defaultValue={description}
+            {...register("description")}
+          />
+          {errors["description"] && (
+            <p className="text-red-500">{errors["description"].message}</p>
+          )}
+        </div>
+        <div className="flex flex-col mb-4 max-w-[50%]">
+          <label htmlFor="status">ステータス</label>
+          <select
+            id="status"
+            defaultValue={status}
+            className="border rounded-md p-2 text-sm"
+            {...register("status")}
+          >
+            <option value="default" disabled>
+              ステータスを選択
+            </option>
+            <option value="notstarted">未着手</option>
+            <option value="progress">進行中</option>
+            <option value="done">完了</option>
+          </select>
+          {errors["status"] && (
+            <p className="text-red-500">{errors["status"].message}</p>
+          )}
+        </div>
+        <div className="flex justify-center gap-2">
+          <button
+            type="submit"
+            className="bg-blue-500 text-white px-2 py-2 mt-4 rounded-md w-2/5"
+          >
+            更新
+          </button>
+          <button
+            type="submit"
+            className="bg-red-500 text-white px-2 py-2 mt-4 rounded-md w-2/5"
+            onClick={(e) => {
+              e.preventDefault();
+              setIsModalOpen(true);
+            }}
+          >
+            削除
+          </button>
+        </div>
+      </form>
+    </>
   );
 };
 export default EditForm;
