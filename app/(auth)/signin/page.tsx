@@ -3,12 +3,15 @@
 import { loginWithCredentials } from "@/lib/actions";
 import { loginSchema } from "@/validations/loginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 export type LoginFormInput = z.infer<typeof loginSchema>;
 
 const Signin = () => {
+  const router = useRouter();
+
   const {
     handleSubmit,
     reset,
@@ -31,6 +34,9 @@ const Signin = () => {
       setError("email", {
         message: response.message,
       });
+    } else {
+      router.push("/todos");
+      router.refresh();
     }
   };
 

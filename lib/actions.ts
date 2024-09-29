@@ -68,23 +68,30 @@ export const loginWithCredentials = async ({
   email: string;
   password: string;
 }) => {
-  const loginValidation = loginSchema.safeParse({
-    email,
-    password,
-  });
-
-  if (!loginValidation.success) {
-    return {
-      error: true,
-      message: loginValidation.error?.issues[0]?.message ?? "An error occured",
-    };
-  }
-
   try {
+    const loginValidation = loginSchema.safeParse({
+      email,
+      password,
+    });
+
+    if (!loginValidation.success) {
+      return {
+        error: true,
+        message:
+          loginValidation.error?.issues[0]?.message ?? "エラーが発生しました",
+      };
+    }
+
     await signIn("credentials", {
       email,
       password,
       redirect: false,
     });
-  } catch (error) {}
+  } catch (error: any) {
+    return {
+      error: true,
+      message:
+        error.cause.err.message || "メールアドレスかパスワードが間違っています",
+    };
+  }
 };
