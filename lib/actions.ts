@@ -171,13 +171,15 @@ export const createTodo = async ({
 export const getAllTodos = async (
   pageSize: number,
   page: number,
-  query: string
+  query: string,
+  status: Status
 ) => {
   const todos = await prisma.todo.findMany({
     where: {
       title: {
         contains: query,
       },
+      status,
     },
     include: {
       user: true,
@@ -262,12 +264,13 @@ export const getUserByEmail = async (email: string) => {
   }
 };
 
-export const countTodo = async (query: string) => {
+export const countTodo = async (query: string, status: Status) => {
   const todoCount = await prisma.todo.count({
     where: {
       title: {
         contains: query,
       },
+      status,
     },
   });
 

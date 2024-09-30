@@ -1,21 +1,26 @@
 import Pagenation from "@/components/todo/Pagenation";
+import TodoFilter from "@/components/todo/TodoFilter";
 import TodoList from "@/components/todo/TodoList";
 import { countTodo } from "@/lib/actions";
+import { Status } from "@prisma/client";
 
 interface SearchParams {
   page: string;
   query: string;
+  status: Status;
 }
 
 const Todos = async ({ searchParams }: { searchParams: SearchParams }) => {
   const pageSize = 5;
   const page = parseInt(searchParams.page) || 1;
   const query = searchParams.query;
-  const todoCount = await countTodo(query);
+  const status = searchParams.status;
+  const todoCount = await countTodo(query, status);
 
   return (
     <div>
-      <TodoList pageSize={pageSize} page={page} query={query} />
+      <TodoFilter />
+      <TodoList pageSize={pageSize} page={page} query={query} status={status} />
       <Pagenation
         itemCount={todoCount}
         pageSize={pageSize}

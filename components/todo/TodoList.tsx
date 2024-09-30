@@ -1,15 +1,17 @@
 import { getAllTodos } from "@/lib/actions";
 import { statusName, statusStyle } from "@/lib/todoStatus";
+import { Status } from "@prisma/client";
 import Link from "next/link";
 
 interface TodoListProps {
   pageSize: number;
   page: number;
   query: string;
+  status: Status;
 }
 
-const TodoList = async ({ pageSize, page, query }: TodoListProps) => {
-  const todos = await getAllTodos(pageSize, page, query);
+const TodoList = async ({ pageSize, page, query, status }: TodoListProps) => {
+  const todos = await getAllTodos(pageSize, page, query, status);
 
   return (
     <ul>
