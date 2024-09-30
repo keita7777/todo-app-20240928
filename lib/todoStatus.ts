@@ -11,6 +11,7 @@ export const statusName = (status: string) => {
   }
 };
 
+// 以下不要になった、うまく使えなかった
 export const statusStyle = (status: string) => {
   switch (status) {
     case "notstarted":
