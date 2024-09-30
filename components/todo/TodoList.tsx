@@ -28,9 +28,15 @@ const TodoList = async ({
             <div className="flex justify-between items-center gap-2 mb-2">
               <div className="flex items-center w-[calc(100%-3rem)]">
                 <span
-                  className={`text-xs rounded-md px-2 py-1 flex-shrink-0 min-w-12 text-center ${statusStyle(
-                    todo.status
-                  )}`}
+                  className={`text-xs rounded-md px-2 py-1 flex-shrink-0 min-w-12 text-center ${
+                    todo.status === "notstarted"
+                      ? "bg-blue-300"
+                      : todo.status === "progress"
+                      ? "bg-green-300"
+                      : todo.status === "done"
+                      ? "bg-gray-300"
+                      : ""
+                  }`}
                 >
                   {statusName(todo.status)}
                 </span>
