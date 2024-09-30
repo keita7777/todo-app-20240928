@@ -8,6 +8,7 @@ interface SearchParams {
   page: string;
   query: string;
   status: Status;
+  sort: "desc" | "asc";
 }
 
 const Todos = async ({ searchParams }: { searchParams: SearchParams }) => {
@@ -15,12 +16,19 @@ const Todos = async ({ searchParams }: { searchParams: SearchParams }) => {
   const page = parseInt(searchParams.page) || 1;
   const query = searchParams.query;
   const status = searchParams.status;
+  const sort = searchParams.sort;
   const todoCount = await countTodo(query, status);
 
   return (
     <div>
       <TodoFilter />
-      <TodoList pageSize={pageSize} page={page} query={query} status={status} />
+      <TodoList
+        pageSize={pageSize}
+        page={page}
+        query={query}
+        status={status}
+        sort={sort}
+      />
       <Pagenation
         itemCount={todoCount}
         pageSize={pageSize}

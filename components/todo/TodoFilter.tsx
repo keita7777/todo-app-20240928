@@ -1,4 +1,5 @@
 import TodoFilterButton from "./TodoFilterButton";
+import TodoSort from "./TodoSort";
 
 const TodoFilterButtons = [
   { label: "全て" },
@@ -21,14 +22,7 @@ const TodoFilter = () => {
           ))}
         </ul>
       </div>
-      <div>
-        <ul>
-          <li>
-            <button>昇順（日付）</button>
-            <button>降順（日付）</button>
-          </li>
-        </ul>
-      </div>
+      <TodoSort />
     </div>
   );
 };

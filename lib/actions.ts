@@ -172,7 +172,8 @@ export const getAllTodos = async (
   pageSize: number,
   page: number,
   query: string,
-  status: Status
+  status: Status,
+  sort: "desc" | "asc"
 ) => {
   const todos = await prisma.todo.findMany({
     where: {
@@ -185,7 +186,7 @@ export const getAllTodos = async (
       user: true,
     },
     orderBy: {
-      updatedAt: "desc",
+      updatedAt: sort || "desc",
     },
     take: pageSize,
     skip: (page - 1) * pageSize,

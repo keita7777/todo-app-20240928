@@ -8,10 +8,17 @@ interface TodoListProps {
   page: number;
   query: string;
   status: Status;
+  sort: "desc" | "asc";
 }
 
-const TodoList = async ({ pageSize, page, query, status }: TodoListProps) => {
-  const todos = await getAllTodos(pageSize, page, query, status);
+const TodoList = async ({
+  pageSize,
+  page,
+  query,
+  status,
+  sort,
+}: TodoListProps) => {
+  const todos = await getAllTodos(pageSize, page, query, status, sort);
 
   return (
     <ul>

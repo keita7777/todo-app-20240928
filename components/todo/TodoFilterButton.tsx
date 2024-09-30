@@ -11,8 +11,6 @@ const TodoFilterButton = ({ label, value }: TodoFilterButtonProps) => {
   const searchParams = useSearchParams();
   const { replace } = useRouter();
 
-  console.log(value);
-
   const handleFilter = () => {
     const params = new URLSearchParams(searchParams);
     params.set("page", "1");
