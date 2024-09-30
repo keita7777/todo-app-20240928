@@ -2,8 +2,13 @@ import { getAllTodos } from "@/lib/actions";
 import { statusName, statusStyle } from "@/lib/todoStatus";
 import Link from "next/link";
 
-const TodoList = async () => {
-  const todos = await getAllTodos();
+interface TodoListProps {
+  pageSize: number;
+  page: number;
+}
+
+const TodoList = async ({ pageSize, page }: TodoListProps) => {
+  const todos = await getAllTodos(pageSize, page);
 
   return (
     <ul>

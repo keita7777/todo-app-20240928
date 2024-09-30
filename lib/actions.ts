@@ -164,7 +164,7 @@ export const createTodo = async ({
   }
 };
 
-export const getAllTodos = async () => {
+export const getAllTodos = async (pageSize: number, page: number) => {
   const todos = await prisma.todo.findMany({
     include: {
       user: true,
@@ -172,6 +172,8 @@ export const getAllTodos = async () => {
     orderBy: {
       updatedAt: "desc",
     },
+    take: pageSize,
+    skip: (page - 1) * pageSize,
   });
   return todos;
 };
