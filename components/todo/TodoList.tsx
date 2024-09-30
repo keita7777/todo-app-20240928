@@ -5,10 +5,11 @@ import Link from "next/link";
 interface TodoListProps {
   pageSize: number;
   page: number;
+  query: string;
 }
 
-const TodoList = async ({ pageSize, page }: TodoListProps) => {
-  const todos = await getAllTodos(pageSize, page);
+const TodoList = async ({ pageSize, page, query }: TodoListProps) => {
+  const todos = await getAllTodos(pageSize, page, query);
 
   return (
     <ul>

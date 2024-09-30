@@ -1,6 +1,7 @@
 import HeaderLinks from "./HeaderLinks";
 import { auth } from "@/auth";
 import ProfileButton from "./ProfileButton";
+import TodoSearch from "./TodoSearch";
 
 const Header = async () => {
   const session = await auth();
@@ -18,13 +19,7 @@ const Header = async () => {
         </div>
         {session && (
           <div className="flex items-center gap-4">
-            <div>
-              <input
-                type="text"
-                placeholder="TODOを検索"
-                className="border rounded-md px-2 py-1 text-sm"
-              />
-            </div>
+            <TodoSearch />
             <ProfileButton />
           </div>
         )}
