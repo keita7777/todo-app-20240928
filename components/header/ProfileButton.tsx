@@ -3,12 +3,15 @@
 import { FaUserCircle } from "react-icons/fa";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { logout } from "@/lib/actions";
+import { useRouter } from "next/navigation";
 
 // https://katatumuri.xyz/react/357/react-modal-function-component/
 // このページを参考に作成
 
 const ProfileButton = () => {
   const [isModelOpen, setIsModelOpen] = useState(false);
+  const router = useRouter();
 
   // -----3------
   const closeModal = useCallback(() => {
@@ -51,7 +54,15 @@ const ProfileButton = () => {
               </Link>
             </li>
             <li className="bg-white rounded-md text-center">
-              <button className="block w-full p-2">ログアウト</button>
+              <button
+                onClick={async () => {
+                  await logout();
+                  router.push("/signin");
+                }}
+                className="block w-full p-2"
+              >
+                ログアウト
+              </button>
             </li>
           </ul>
         </div>

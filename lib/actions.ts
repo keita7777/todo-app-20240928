@@ -1,7 +1,7 @@
 "use server";
 
 import { TodoFormInput } from "@/app/(todo)/todos/create/page";
-import { auth, signIn } from "@/auth";
+import { auth, signIn, signOut } from "@/auth";
 import prisma from "@/prisma/db";
 import { loginSchema } from "@/validations/loginSchema";
 import { signupSchema } from "@/validations/signupSchema";
@@ -107,6 +107,10 @@ export const loginWithCredentials = async ({
         error.cause.err.message || "メールアドレスかパスワードが間違っています",
     };
   }
+};
+
+export const logout = async () => {
+  await signOut();
 };
 
 export const createTodo = async ({
