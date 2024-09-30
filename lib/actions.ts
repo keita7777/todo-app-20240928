@@ -199,11 +199,8 @@ export const getTodoDetail = async (id: string) => {
     where: {
       id,
     },
-    select: {
-      id: true,
-      title: true,
-      description: true,
-      status: true,
+    include: {
+      user: true,
     },
   });
 
