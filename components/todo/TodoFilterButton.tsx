@@ -9,10 +9,12 @@ interface TodoFilterButtonProps {
 
 const TodoFilterButton = ({ label, value }: TodoFilterButtonProps) => {
   const searchParams = useSearchParams();
+  const params = new URLSearchParams(searchParams);
   const { replace } = useRouter();
 
+  const currentStatus = params.get("status") || undefined;
+
   const handleFilter = () => {
-    const params = new URLSearchParams(searchParams);
     params.set("page", "1");
 
     if (value) {
@@ -27,7 +29,9 @@ const TodoFilterButton = ({ label, value }: TodoFilterButtonProps) => {
   return (
     <li>
       <button
-        className={`border bg-blue-200 px-2 py-1 rounded-md`}
+        className={`border  px-2 py-1 rounded-md ${
+          currentStatus === value && "bg-blue-200"
+        }`}
         onClick={handleFilter}
       >
         {label}
