@@ -41,6 +41,7 @@ const Create = () => {
 
   return (
     <div>
+      {formState.isSubmitSuccessful && null}
       <h1 className="text-center text-2xl font-bold mb-6">TODOを作成</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <fieldset disabled={formState.isSubmitting}>
