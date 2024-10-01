@@ -3,6 +3,7 @@ import TodoFilter from "@/components/todo/TodoFilter";
 import TodoList from "@/components/todo/TodoList";
 import { countAllTodo, countTodo } from "@/lib/actions";
 import { Status } from "@prisma/client";
+import { Suspense } from "react";
 
 interface SearchParams {
   page: string;
@@ -27,13 +28,15 @@ const Todos = async ({ searchParams }: { searchParams: SearchParams }) => {
       {todoAllCount > 0 ? (
         <>
           <TodoFilter />
-          <TodoList
-            pageSize={pageSize}
-            page={page}
-            query={query}
-            status={status}
-            sort={sort}
-          />
+          <Suspense fallback={<p>ローディング中...</p>}>
+            <TodoList
+              pageSize={pageSize}
+              page={page}
+              query={query}
+              status={status}
+              sort={sort}
+            />
+          </Suspense>
           <Pagenation
             itemCount={todoCount}
             pageSize={pageSize}
