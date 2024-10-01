@@ -15,6 +15,7 @@ const Create = () => {
     handleSubmit,
     register,
     setError,
+    reset,
     formState,
     formState: { errors },
   } = useForm<TodoFormInput>({
@@ -100,8 +101,9 @@ const Create = () => {
               登録
             </button>
             <button
-              type="submit"
+              type="button"
               className="bg-gray-500 text-white px-2 py-2 mt-4 rounded-md w-2/5"
+              onClick={() => reset()}
             >
               リセット
             </button>
