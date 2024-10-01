@@ -6,5 +6,5 @@ export default function Home() {
   if (!session) {
     redirect("/signin");
   }
-  redirect("/todo");
+  redirect("/todos");
 }
