@@ -8,7 +8,7 @@
 - TODO 新規作成（/todos/create）
 - TODO 詳細（/todos/[id]）
 
-<br><br>
+<br>
 ログインユーザーが作成者でない場合は/todos/[id]へリダイレクト（app\(todo)\todos\[id]\edit\page.tsx）
 
 - TODO 編集（/todos/[id]/edit）
