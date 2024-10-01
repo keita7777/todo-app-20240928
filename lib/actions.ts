@@ -7,7 +7,9 @@ import { loginSchema } from "@/validations/loginSchema";
 import { signupSchema } from "@/validations/signupSchema";
 import { todoSchema } from "@/validations/todoSchema";
 import { Status } from "@prisma/client";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { hash } from "bcryptjs";
+import { AuthError } from "next-auth";
 import { redirect } from "next/navigation";
 
 export const createUser = async ({
@@ -50,12 +52,14 @@ export const createUser = async ({
         password: hashedPassword,
       },
     });
-  } catch (error: any) {
-    if (error.code === "P2002") {
-      return {
-        error: true,
-        message: "このメールアドレスはすでに登録されています",
-      };
+  } catch (error: unknown) {
+    if (error instanceof PrismaClientKnownRequestError) {
+      if (error.code === "P2002") {
+        return {
+          error: true,
+          message: "このメールアドレスはすでに登録されています",
+        };
+      }
     }
 
     return {
@@ -86,11 +90,18 @@ export const loginWithCredentials = async ({
       };
     }
 
-    await signIn("credentials", {
+    const result = await signIn("credentials", {
       email,
       password,
       redirect: false,
     });
+
+    if (!result?.ok) {
+      return {
+        error: true,
+        message: "メールアドレスかパスワードが間違っています",
+      };
+    }
 
     await prisma.user.update({
       where: {
@@ -100,11 +111,18 @@ export const loginWithCredentials = async ({
         lastLogin: new Date(),
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
+    if (error instanceof AuthError) {
+      return {
+        error: true,
+        message:
+          error.cause?.err?.message ||
+          "メールアドレスかパスワードが間違っています",
+      };
+    }
     return {
       error: true,
-      message:
-        error.cause.err.message || "メールアドレスかパスワードが間違っています",
+      message: "ログインに失敗しました",
     };
   }
 };
@@ -160,7 +178,7 @@ export const createTodo = async ({
         userId: userId.id,
       },
     });
-  } catch (error: any) {
+  } catch {
     return {
       error: true,
       message: "エラーが発生しました",
@@ -221,7 +239,7 @@ export const updateTodo = async (todoId: string, data: TodoFormInput) => {
         ...data,
       },
     });
-  } catch (error) {
+  } catch {
     return {
       error: true,
       message: "更新に失敗しました",
@@ -236,7 +254,7 @@ export const deleteTodo = async (id: string) => {
         id,
       },
     });
-  } catch (error) {
+  } catch {
     return {
       error: true,
       message: "更新に失敗しました",
@@ -257,7 +275,7 @@ export const getUserByEmail = async (email: string) => {
     }
 
     return user;
-  } catch (error) {
+  } catch {
     console.log("エラーが発生しました");
   }
 };
