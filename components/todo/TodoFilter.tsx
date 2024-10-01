@@ -1,3 +1,4 @@
+import SeachQueryReset from "../header/SeachQueryReset";
 import TodoFilterButton from "./TodoFilterButton";
 import TodoSort from "./TodoSort";
 
@@ -22,7 +23,10 @@ const TodoFilter = () => {
           ))}
         </ul>
       </div>
-      <TodoSort />
+      <div className="flex gap-2">
+        <SeachQueryReset />
+        <TodoSort />
+      </div>
     </div>
   );
 };
