@@ -285,3 +285,9 @@ export const countTodo = async (query: string, status: Status) => {
 
   return todoCount;
 };
+
+export const countAllTodo = async () => {
+  const todoAllCount = await prisma.todo.count();
+
+  return todoAllCount;
+};

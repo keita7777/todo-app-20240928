@@ -1,7 +1,7 @@
 import Pagenation from "@/components/todo/Pagenation";
 import TodoFilter from "@/components/todo/TodoFilter";
 import TodoList from "@/components/todo/TodoList";
-import { countTodo } from "@/lib/actions";
+import { countAllTodo, countTodo } from "@/lib/actions";
 import { Status } from "@prisma/client";
 
 interface SearchParams {
@@ -19,21 +19,32 @@ const Todos = async ({ searchParams }: { searchParams: SearchParams }) => {
   const sort = searchParams.sort;
   const todoCount = await countTodo(query, status);
 
+  // TODOが1つもない場合、フィルタも非表示にする
+  const todoAllCount = await countAllTodo();
+
   return (
     <div>
-      <TodoFilter />
-      <TodoList
-        pageSize={pageSize}
-        page={page}
-        query={query}
-        status={status}
-        sort={sort}
-      />
-      <Pagenation
-        itemCount={todoCount}
-        pageSize={pageSize}
-        currentPage={page}
-      />
+      {todoAllCount > 0 ? (
+        <>
+          <TodoFilter />
+          <TodoList
+            pageSize={pageSize}
+            page={page}
+            query={query}
+            status={status}
+            sort={sort}
+          />
+          <Pagenation
+            itemCount={todoCount}
+            pageSize={pageSize}
+            currentPage={page}
+          />
+        </>
+      ) : (
+        <div>
+          <p>TODOが1つもありません。新しいTODOを作成してください。</p>
+        </div>
+      )}
     </div>
   );
 };
