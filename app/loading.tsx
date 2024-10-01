@@ -1,6 +1,8 @@
 const loading = () => {
   return (
-    <div className="w-screen h-screen bg-slate-300">ローディング中...</div>
+    <div className="absolute top-0 left-0 w-screen h-screen bg-slate-100 bg-opacity-60 flex justify-center items-center">
+      <p className="text-2xl">ローディング中...</p>
+    </div>
   );
 };
 export default loading;
