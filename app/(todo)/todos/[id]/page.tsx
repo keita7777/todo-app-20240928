@@ -37,6 +37,7 @@ const Detail = async ({ params }: { params: { id: string } }) => {
           <h2 className="text-xl font-bold mb-2">更新日</h2>
           <p>{new Date(todo.updatedAt).toLocaleString()}</p>
         </div>
+        {/* ログインユーザーがTODO作成者である場合のみボタンを表示 */}
         {todo.user.email === currentUserEmail && (
           <div className="flex justify-center gap-4">
             <Link
