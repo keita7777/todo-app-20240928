@@ -96,13 +96,6 @@ export const loginWithCredentials = async ({
       redirect: false,
     });
 
-    if (!result?.ok) {
-      return {
-        error: true,
-        message: "メールアドレスかパスワードが間違っています",
-      };
-    }
-
     await prisma.user.update({
       where: {
         email,
