@@ -41,6 +41,7 @@ const Detail = async ({ params }: { params: { id: string } }) => {
           >
             編集
           </Link>
+          {/* 削除ボタンクリックしたらモーダルウィンドウを表示させたいのでコンポーネント化してクライアントコンポーネントにする */}
           <DeleteButton id={todo.id} />
         </div>
       </div>

@@ -7,26 +7,22 @@ import { logout } from "@/lib/actions";
 import { useRouter } from "next/navigation";
 
 // https://katatumuri.xyz/react/357/react-modal-function-component/
-// このページを参考に作成
+// このページを参考にモーダルウィンドウ作成
 
 const ProfileButton = () => {
   const [isModelOpen, setIsModelOpen] = useState(false);
   const router = useRouter();
 
-  // -----3------
   const closeModal = useCallback(() => {
     setIsModelOpen(false);
     document.removeEventListener("click", closeModal);
   }, []);
-  // ---↑修正----
 
-  // -----2------
   useEffect(() => {
     return () => {
       document.removeEventListener("click", closeModal);
     };
   }, [closeModal]);
-  // ---↑追加----
 
   function openModal(e: React.MouseEvent<HTMLButtonElement>) {
     setIsModelOpen(true);

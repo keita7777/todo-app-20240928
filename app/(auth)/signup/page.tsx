@@ -29,6 +29,7 @@ const Signup = () => {
   const onSubmit = async (data: FormInput) => {
     const response = await createUser({ ...data });
 
+    // ユーザー作成処理結果に何かしらのメッセージがある場合はエラーとみなす
     if (response?.message) {
       setError("email", {
         message: response.message,
@@ -38,6 +39,7 @@ const Signup = () => {
 
   return (
     <>
+      {/* // 送信が完了したらフォームを非表示にしてメッセージを表示させる */}
       {formState.isSubmitSuccessful ? (
         <div className="flex flex-col items-center">
           <h1 className="text-center text-2xl font-bold mb-6">
@@ -57,6 +59,7 @@ const Signup = () => {
             新規ユーザー登録
           </h1>
           <form onSubmit={handleSubmit(onSubmit)}>
+            {/* 送信中はフォームを非活性にする */}
             <fieldset disabled={formState.isSubmitting}>
               <div className="flex flex-col mb-4">
                 <label htmlFor="email">メールアドレス</label>

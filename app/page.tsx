@@ -8,3 +8,5 @@ export default function Home() {
   }
   redirect("/todos");
 }
+
+// ホーム画面作ってなかったのでリダイレクトさせるようにした

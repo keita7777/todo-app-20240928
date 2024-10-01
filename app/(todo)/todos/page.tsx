@@ -13,13 +13,20 @@ interface SearchParams {
 }
 
 const Todos = async ({ searchParams }: { searchParams: SearchParams }) => {
+  // 1ページに表示するTODOは5件にする
   const pageSize = 5;
+  // searchParams.pageはstringなのでintにする、計算につかうため
   const page = parseInt(searchParams.page) || 1;
+  // 検索窓で入力された文字
   const query = searchParams.query;
+  // フィルターで指定されたステータス
   const status = searchParams.status;
+  // 日付の並び替えで選択されたソート
   const sort = searchParams.sort;
+  // 検索やフィルターで指定されたTODOの件数
   const todoCount = await countTodo(query, status);
 
+  // 全部のTODO件数を取得する
   // TODOが1つもない場合、フィルタも非表示にする
   const todoAllCount = await countAllTodo();
 

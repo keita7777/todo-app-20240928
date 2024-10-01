@@ -29,11 +29,13 @@ const Create = () => {
   const onSubmit = async (data: TodoFormInput) => {
     const response = await createTodo(data);
 
+    // ユーザー作成処理結果に何かしらのメッセージがある場合はエラーとみなす
     if (response?.message) {
       setError("root", {
         message: response.message,
       });
     } else {
+      // メッセージがない場合は認証成功とみなして/todosに遷移させる
       router.push("/todos");
       router.refresh();
     }

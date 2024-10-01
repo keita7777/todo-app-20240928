@@ -11,7 +11,6 @@ export type EditTodo = {
 
 const Edit = async ({ params }: { params: { id: string } }) => {
   const todo = await getTodoDetail(params.id);
-  // エラーの時どうするか？？
 
   return (
     <div>

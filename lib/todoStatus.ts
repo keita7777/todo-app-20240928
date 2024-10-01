@@ -1,3 +1,4 @@
+// データベースにはステータスの識別名のみ保存してあるので日本語名を表示するための処理
 export const statusName = (status: string) => {
   switch (status) {
     case "notstarted":
@@ -11,7 +12,8 @@ export const statusName = (status: string) => {
   }
 };
 
-// 以下不要になった、うまく使えなかった
+// 以下不要になった
+// <span className={statusStyle(todo.id)}></span>みたいな感じで使おうと思っていたがうまく使えなかった
 export const statusStyle = (status: string) => {
   switch (status) {
     case "notstarted":

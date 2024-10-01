@@ -15,6 +15,7 @@ const HeaderLinks = ({ isSession }: HeaderLinksProps) => {
   return (
     <>
       {links
+        // sessionの有無によって表示するリンクを切り替える
         .filter((link) => link.requireAuth === isSession)
         .map((link) => (
           <li key={link.label}>

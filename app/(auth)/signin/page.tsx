@@ -29,11 +29,13 @@ const Signin = () => {
   const onSubmit = async (data: LoginFormInput) => {
     const response = await loginWithCredentials({ ...data });
 
+    // 認証処理結果に何かしらのメッセージがある場合はエラーとみなす
     if (response?.message) {
       setError("email", {
         message: response.message,
       });
     } else {
+      // メッセージがない場合は認証成功とみなして/todosに遷移させる
       router.push("/todos");
       router.refresh();
     }

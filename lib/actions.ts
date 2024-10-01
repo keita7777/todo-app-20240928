@@ -12,6 +12,7 @@ import { hash } from "bcryptjs";
 import { AuthError } from "next-auth";
 import { redirect } from "next/navigation";
 
+// 新規ユーザー登録処理
 export const createUser = async ({
   email,
   username,
@@ -35,6 +36,7 @@ export const createUser = async ({
       passwordConfirm,
     });
 
+    // バリデーションチェックに失敗した場合はエラーを返す
     if (!signupValidation.success) {
       return {
         error: true,
@@ -43,8 +45,10 @@ export const createUser = async ({
       };
     }
 
+    // パスワードをハッシュ化する
     const hashedPassword = await hash(password, 10);
 
+    // データベースにデータを挿入する
     await prisma.user.create({
       data: {
         email,
@@ -53,6 +57,7 @@ export const createUser = async ({
       },
     });
   } catch (error: unknown) {
+    // データベース上にメールアドレスが既に存在した場合はエラーを返す
     if (error instanceof PrismaClientKnownRequestError) {
       if (error.code === "P2002") {
         return {
@@ -62,6 +67,7 @@ export const createUser = async ({
       }
     }
 
+    // その他のエラーを返す
     return {
       error: true,
       message: "エラーが発生しました",
@@ -69,6 +75,7 @@ export const createUser = async ({
   }
 };
 
+// 認証処理
 export const loginWithCredentials = async ({
   email,
   password,
@@ -82,6 +89,7 @@ export const loginWithCredentials = async ({
       password,
     });
 
+    // バリデーションチェックに失敗した場合はエラーを返す
     if (!loginValidation.success) {
       return {
         error: true,
@@ -90,12 +98,14 @@ export const loginWithCredentials = async ({
       };
     }
 
+    // 認証処理
     await signIn("credentials", {
       email,
       password,
       redirect: false,
     });
 
+    // ユーザーのログイン日時をデータベースに保存
     await prisma.user.update({
       where: {
         email,
@@ -105,6 +115,7 @@ export const loginWithCredentials = async ({
       },
     });
   } catch (error: unknown) {
+    // 認証に関するエラーを返す
     if (error instanceof AuthError) {
       return {
         error: true,
@@ -113,6 +124,8 @@ export const loginWithCredentials = async ({
           "メールアドレスかパスワードが間違っています",
       };
     }
+
+    // その他のエラーを返す
     return {
       error: true,
       message: "ログインに失敗しました",
@@ -120,10 +133,12 @@ export const loginWithCredentials = async ({
   }
 };
 
+// ログアウト処理
 export const logout = async () => {
   await signOut();
 };
 
+// 新規TODO作成処理
 export const createTodo = async ({
   title,
   description,
@@ -139,6 +154,7 @@ export const createTodo = async ({
     status,
   });
 
+  // バリデーションチェックに失敗した場合はエラーを返す
   if (!todoValidation.success) {
     return {
       error: true,
@@ -147,6 +163,7 @@ export const createTodo = async ({
     };
   }
 
+  // 現在ログインしているユーザーの情報を取得する
   const session = await auth();
   const sessionUserEmail = session?.user?.email;
   const userId = await prisma.user.findUnique({
@@ -158,11 +175,13 @@ export const createTodo = async ({
     },
   });
 
+  // ユーザーが見つからない場合はログインページにリダイレクト
   if (!userId) {
     redirect("/login");
   }
 
   try {
+    // 新規TODOをデータベースに保存
     await prisma.todo.create({
       data: {
         title,
@@ -172,6 +191,7 @@ export const createTodo = async ({
       },
     });
   } catch {
+    // 失敗した場合エラーを返す
     return {
       error: true,
       message: "エラーが発生しました",
@@ -179,6 +199,7 @@ export const createTodo = async ({
   }
 };
 
+// TODO取得処理、フィルター、ソート、ページネーション、検索でも使用
 export const getAllTodos = async (
   pageSize: number,
   page: number,
@@ -188,33 +209,43 @@ export const getAllTodos = async (
 ) => {
   const todos = await prisma.todo.findMany({
     where: {
+      // 検索用にtitleにqueryの文字があるかチェック
       title: {
         contains: query,
       },
+      // ステータスでのフィルター用
       status,
     },
+    // ユーザー名も取得したいのでuser情報も取得する
     include: {
       user: true,
     },
+    // 日付でのソート用、デフォルトは降順
     orderBy: {
       updatedAt: sort || "desc",
     },
+    // 1ページに何件表示するか設定（5件としている）
     take: pageSize,
+    // ページネーション用
     skip: (page - 1) * pageSize,
   });
   return todos;
 };
 
+// 特定のidを持つTODOを取得する処理
+// /todos/[id]　および　/todos/[id]/edit　で使用する
 export const getTodoDetail = async (id: string) => {
   const todo = await prisma.todo.findUnique({
     where: {
       id,
     },
+    // ユーザー情報も取得する
     include: {
       user: true,
     },
   });
 
+  // 該当するTODOが見つからなかった場合エラーを返す
   if (!todo) {
     throw new Error("TODOの取得に失敗しました");
   }
@@ -222,8 +253,10 @@ export const getTodoDetail = async (id: string) => {
   return todo;
 };
 
+// TODO更新処理
 export const updateTodo = async (todoId: string, data: TodoFormInput) => {
   try {
+    // idに一致したTODOをフォームのデータで更新する
     await prisma.todo.update({
       where: {
         id: todoId,
@@ -233,6 +266,7 @@ export const updateTodo = async (todoId: string, data: TodoFormInput) => {
       },
     });
   } catch {
+    // 失敗した場合エラーを返す
     return {
       error: true,
       message: "更新に失敗しました",
@@ -240,14 +274,17 @@ export const updateTodo = async (todoId: string, data: TodoFormInput) => {
   }
 };
 
+// TODO削除処理
 export const deleteTodo = async (id: string) => {
   try {
+    // idに一致したTODOを削除する
     await prisma.todo.delete({
       where: {
         id,
       },
     });
   } catch {
+    // 失敗した場合エラーを返す
     return {
       error: true,
       message: "更新に失敗しました",
@@ -255,24 +292,32 @@ export const deleteTodo = async (id: string) => {
   }
 };
 
+// 特定のメールアドレスを持つユーザーを取得する処理
+// /profileで使用する
 export const getUserByEmail = async (email: string) => {
   try {
+    // 特定のメールアドレスを持つユーザーをデータベースから探す
     const user = await prisma.user.findUnique({
       where: {
         email,
       },
     });
 
+    // ユーザーが見つからなかった場合エラーを返す
     if (!user) {
       return null;
     }
 
     return user;
   } catch {
+    // 予期せぬエラーが発生した場合の処理
+    // throw new Errorのほうがよいのか？
     console.log("エラーが発生しました");
   }
 };
 
+// 検索で指定した文字や、特定のステータスのTODO件数を取得する
+// 検索機能、フィルター機能、ページネーションで使用
 export const countTodo = async (query: string, status: Status) => {
   const todoCount = await prisma.todo.count({
     where: {
@@ -286,6 +331,8 @@ export const countTodo = async (query: string, status: Status) => {
   return todoCount;
 };
 
+// データベースにあるすべてのTODO件数を取得する処理
+// TODOが1件もない場合はメッセージを表示するので、そのため用の処理
 export const countAllTodo = async () => {
   const todoAllCount = await prisma.todo.count();
 
