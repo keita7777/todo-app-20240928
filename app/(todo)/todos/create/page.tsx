@@ -4,19 +4,18 @@ import { createTodo } from "@/lib/actions";
 import { todoSchema } from "@/validations/todoSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 export type TodoFormInput = z.infer<typeof todoSchema>;
 
 const Create = () => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
   const {
     handleSubmit,
     register,
     setError,
+    formState,
     formState: { errors },
   } = useForm<TodoFormInput>({
     resolver: zodResolver(todoSchema),
@@ -28,7 +27,6 @@ const Create = () => {
   });
 
   const onSubmit = async (data: TodoFormInput) => {
-    setIsSubmitting(true);
     const response = await createTodo(data);
 
     if (response?.message) {
@@ -39,15 +37,13 @@ const Create = () => {
       router.push("/todos");
       router.refresh();
     }
-
-    setIsSubmitting(false);
   };
 
   return (
     <div>
       <h1 className="text-center text-2xl font-bold mb-6">TODOを作成</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <fieldset disabled={isSubmitting}>
+        <fieldset disabled={formState.isSubmitting}>
           <div className="flex flex-col mb-4">
             <label htmlFor="title">タイトル</label>
             <input

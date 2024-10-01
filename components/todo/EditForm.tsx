@@ -8,10 +8,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
-import { useState } from "react";
 
 const EditForm = ({ todo }: { todo: EditTodo }) => {
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const { id, title, description, status } = todo;
   const router = useRouter();
 
@@ -19,6 +17,7 @@ const EditForm = ({ todo }: { todo: EditTodo }) => {
     handleSubmit,
     register,
     setError,
+    formState,
     formState: { errors },
   } = useForm<TodoFormInput>({
     resolver: zodResolver(todoSchema),
@@ -30,7 +29,6 @@ const EditForm = ({ todo }: { todo: EditTodo }) => {
   });
 
   const onSubmit = async (data: TodoFormInput) => {
-    setIsSubmitting(true);
     const response = await updateTodo(id, data);
 
     if (response?.message) {
@@ -41,13 +39,11 @@ const EditForm = ({ todo }: { todo: EditTodo }) => {
       router.push("/todos");
       router.refresh();
     }
-
-    setIsSubmitting(false);
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <fieldset disabled={isSubmitting}>
+      <fieldset disabled={formState.isSubmitting}>
         {errors["root"] && (
           <p className="text-red-500 text-center">{errors["root"].message}</p>
         )}
