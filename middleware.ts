@@ -4,7 +4,7 @@ import { auth } from "./auth";
 // sessionが無い状態で/todos、/profileにアクセスすると/signinにリダイレクトさせる
 
 export async function middleware(request: Request) {
-  const session = auth();
+  const session = await auth();
   if (!session) {
     return NextResponse.redirect(new URL("/signin", request.url));
   }

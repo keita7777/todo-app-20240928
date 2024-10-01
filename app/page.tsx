@@ -1,14 +1,13 @@
 import { auth } from "@/auth";
-// import { redirect } from "next/navigation";
+import { redirect } from "next/navigation";
 
-export default function Home() {
-  const session = auth();
+export default async function Home() {
+  const session = await auth();
+
   if (!session) {
-    // redirect("/signin");
-    return <p>sessionがありません</p>;
+    redirect("/signin");
   }
-  // redirect("/todos");
-  return <p>sessionがあります</p>;
+  redirect("/todos");
 }
 
 // ホーム画面作ってなかったのでリダイレクトさせるようにした
