@@ -1,5 +1,5 @@
 import { getAllTodos } from "@/lib/actions";
-import { statusName, statusStyle } from "@/lib/todoStatus";
+import { statusName } from "@/lib/todoStatus";
 import { Status } from "@prisma/client";
 import Link from "next/link";
 

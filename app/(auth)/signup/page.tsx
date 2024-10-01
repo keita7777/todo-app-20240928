@@ -12,7 +12,6 @@ export type FormInput = z.infer<typeof signupSchema>;
 const Signup = () => {
   const {
     handleSubmit,
-    reset,
     register,
     setError,
     formState,

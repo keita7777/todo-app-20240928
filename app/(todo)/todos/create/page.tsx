@@ -13,10 +13,8 @@ const Create = () => {
   const router = useRouter();
   const {
     handleSubmit,
-    reset,
     register,
     setError,
-    formState,
     formState: { errors },
   } = useForm<TodoFormInput>({
     resolver: zodResolver(todoSchema),

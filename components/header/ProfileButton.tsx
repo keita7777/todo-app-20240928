@@ -2,7 +2,7 @@
 
 import { FaUserCircle } from "react-icons/fa";
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { logout } from "@/lib/actions";
 import { useRouter } from "next/navigation";
 
@@ -28,7 +28,7 @@ const ProfileButton = () => {
   }, [closeModal]);
   // ---↑追加----
 
-  function openModal(e: any) {
+  function openModal(e: React.MouseEvent<HTMLButtonElement>) {
     setIsModelOpen(true);
     document.addEventListener("click", closeModal);
     e.stopPropagation();
@@ -37,7 +37,7 @@ const ProfileButton = () => {
   return (
     <div className="relative">
       <button
-        onClick={(e: any) => {
+        onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
           e.preventDefault();
           e.stopPropagation();
           openModal(e);

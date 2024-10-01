@@ -5,7 +5,6 @@ import Link from "next/link";
 
 const Detail = async ({ params }: { params: { id: string } }) => {
   const todo = await getTodoDetail(params.id);
-  console.log(todo);
 
   return (
     <div>

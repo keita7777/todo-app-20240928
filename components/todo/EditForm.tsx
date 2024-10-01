@@ -15,10 +15,8 @@ const EditForm = ({ todo }: { todo: EditTodo }) => {
 
   const {
     handleSubmit,
-    reset,
     register,
     setError,
-    formState,
     formState: { errors },
   } = useForm<TodoFormInput>({
     resolver: zodResolver(todoSchema),
