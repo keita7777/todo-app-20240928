@@ -1,3 +1,26 @@
+# アプリケーション情報
+
+## デプロイ URL
+
+https://todo-app-20240928.vercel.app/
+
+## GitHub
+
+https://github.com/keita7777/todo-app-20240928.git
+
+## テストユーザー
+
+### メールアドレス
+
+test@gmail.com
+
+### パスワード
+
+12345
+
+<br><br>
+新規ユーザー登録、新規 TODO 作成、既存 TODO 削除などなんでもやっていただいて問題ありません。
+
 # ページ構成
 
 ## TODO
