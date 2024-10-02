@@ -42,8 +42,8 @@ const TodoList = async ({
                     >
                       {statusName(todo.status)}
                     </span>
-                    <div className="flex ml-4 gap-2 items-center flex-1">
-                      <p className="flex-shrink-0">{todo.title}</p>
+                    <div className="flex ml-4 gap-2 items-center flex-1 truncate">
+                      <p className="w-full truncate">{todo.title}</p>
                     </div>
                   </div>
                 </div>
