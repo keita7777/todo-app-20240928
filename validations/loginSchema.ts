@@ -1,3 +1,5 @@
+// ログインフォームのバリデーション
+
 import { z } from "zod";
 import { passwordSchema } from "./passwordSchema";
 

@@ -1,3 +1,5 @@
+// 新規ユーザー登録フォームのバリデーション
+
 import { z } from "zod";
 import { passwordMatchSchema } from "./passwordMatchSchema";
 

@@ -1,3 +1,5 @@
+// 新規ユーザー登録フォームの「パスワード」と「パスワード確認」の入力値が一致しているかをチェック
+
 import { z } from "zod";
 import { passwordSchema } from "./passwordSchema";
 

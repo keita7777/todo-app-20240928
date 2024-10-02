@@ -13,7 +13,9 @@ export const statusName = (status: string) => {
 };
 
 // 以下不要になった
+// components\todo\TodoList.tsx でステータスの背景色を変更する処理
 // <span className={statusStyle(todo.id)}></span>みたいな感じで使おうと思っていたがうまく使えなかった
+// components\todo\TodoList.tsx　34行目あたりの記述で代用した
 export const statusStyle = (status: string) => {
   switch (status) {
     case "notstarted":
